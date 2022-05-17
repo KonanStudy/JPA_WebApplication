@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+<head th:fragment="header">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrinkto-fit=no">
+
+    <title> : 통합검색</title>
+    <meta charset="utf-8">
+    <meta name="referrer" content="always">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="통합검색">
+    <meta property="og:description" content="''의 통합검색 결과입니다.">
+    <link type="text/css" rel="stylesheet"  href="/css/search/reset.css">
+    <link type="text/css" rel="stylesheet"  href="/css/search/main.css">
+    <link type="text/css" rel="stylesheet"  href="/css/search/search.css">
+    <link type="text/css" rel="stylesheet"  href="/js/search/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <!--     <link type="text/css" rel="stylesheet"  href="resources/js/jquery/pagination.css"> -->
+    <script type="text/javascript" src="/js/search/jquery-ui-1.12.1.custom/external/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="/js/search/jquery-ui-1.12.1.custom/jquery-ui.js"></script><!--jQuery UI -->
+    <script type="text/javascript" src="/js/search/jquery/jquery.deserialize.min.js"></script>
+    <script type="text/javascript" src="/js/search/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/search/jquery/jquery.konan.sf-ko.js"></script><!-- 자동완성: 텍스트  -->
+    <script type="text/javascript" src="/js/search/jquery/jquery.konan.sf.js"></script><!-- 자동완성,최근검색어  -->
+    <script type="text/javascript" src="/js/search/jquery/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/js/search/common.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/rolling.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/search.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/search.ksf.js"></script>
+    <script type="text/javascript" src="/js/search/search.kla.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/rolling.js"></script><!-- Events -->
+    <!-- 엑셀저장 -->
+    <script type="text/javascript" src="/js/search/sheetjs/xlsx.full.min.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/filesaver/FileSaver.min.js"></script><!-- Events -->
+    <script type="text/javascript" src="/js/search/search.excel.js"></script><!-- Events -->
+    <script>
+        $( function() {
+            $( "#sdate, #edate" ).datepicker({ dateFormat:"yymmdd" });
+
+
+            document.body.onclick=function(e){
+                $(".auto-search").css('display', 'none');
+                $(".auto-recent").css('display', 'none');
+            };
+
+            //메타태그 수정
+            $("meta[property='og\\:title']").attr("content", '<c:out value="${params.kwd}" />:통합검색' );
+            $("meta[property='og\\:description']").attr("content", '<c:out value="${params.kwd}" />의 통합검색 결과입니다' );
+            /*document.title = '<c:out value="${params.kwd}" />:통합검색';*/
+            document.title = ':통합검색';
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

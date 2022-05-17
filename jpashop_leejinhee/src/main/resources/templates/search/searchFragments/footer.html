@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<section class="botsearch" th:fragment="footer">
+  <div class="search-wrap">
+    <div class="rankupp-wrap">
+      <!-- 급상승키워드 -->
+      <div id="rankupp" class="rankupp-wrap">
+      </div>
+      <!-- 검색폼 -->
+      <fieldset>
+        <legend>통합검색</legend>
+        <form name="searchForm">
+          <div class="search-box">
+            <div class="search-box-inner">
+              <label for="footer-search-text" class="blind">검색어를 입력하세요</label>
+              <input type="text" name="kwd" value="" id="footer-search-text" title="통합검색어 입력" placeholder="검색어를 입력하세요">
+            </div>
+            <button type="submit" title="검색"><span class="blind">검색</span></button>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
+    <div class="address">
+      <p class="city">(주)코난테크놀로지 서울특별시 서초구 서초동 강남대로 327 </p>
+      <p class="copy">© Konan all rights reserved</p>
+    </div>
+  </div>
+</section>

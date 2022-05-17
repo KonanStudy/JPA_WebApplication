@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<div class="lst-type-wrap" th:fragment="sample" xmlns:th="http://www.w3.org/1999/html">
+  <h3 data-target="sample">샘플
+
+    <th:block th:if="${error != ''}">
+      <span>-[[${error}]]</span>
+    </th:block>
+    <th:bloc th:unless="${error != ''}">
+      <span>([[${#numbers.formatInteger(sampleTotal,0,'COMMA')}]]건)</span>
+    </th:bloc>
+  </h3>
+
+  <th:block th:if="${sampleTotal> 0}">
+    <ul class="lst-type-thumb">
+      <th:block th:each="result : ${sampleList}">
+        <li style="min-height:0px">
+          <input type="hidden" name="id" th:value="${result.post_id}">
+          <dl>
+            <dt>
+              <a class="title" th:href="${result.post_url}" th:target="_blank">[[${result.title}]]</a>
+              <span>[[${#temporals.createDate(ed, 'yyyyMMdd')}]]</span>
+            </dt>
+            <dd>[[${result.message}]]</dd>
+            <dd class="link-info">[[${result.category}]]</dd>
+          </dl>
+        </li>
+      </th:block>
+    </ul>
+  </th:block>
+
+  <th:block th:if="${params.category eq 'total' and sampleTotal > params.pageSize}">
+    <div class="section-btn more">
+      <a th:href="javascript:void(0);" data-target="sample" data-trcode="sweb_more">샘플 더 보기<span class="ico-set arrow-type-a"></span></a>
+    </div>
+  </th:block>
+
+</div>
+<!-- e.통합검색 -->
+
+<!-- 페이지 -->
+<div id="pagination" class="paging"></div>
+<script type="text/javascript">
+
+  $(function() {
+    <th:block th:if="${params.category ne 'total'}">
+      $('#pagination').pagination([[${sampleTotal}]], {
+      current_page: [[${#numbers.formatInteger(params.page -1 }]],
+      callback: gotopage
+    });
+    </th:block>
+  });
+</script>

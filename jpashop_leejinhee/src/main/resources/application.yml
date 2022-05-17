@@ -1,0 +1,30 @@
+spring:
+  thymeleaf:
+  prefix: classpath:/templates/
+  suffix: .html
+
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/jpashop
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.10.20.216:3306/leejinhee?serverTimezone=UTC&characterEncoding=UTF-8&verifyServerCertificate=false&useSSL=false
+    username: konan
+    password: konan415
+
+
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
