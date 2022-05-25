@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<div class="lst-type-wrap" th:fragment="sample" xmlns:th="http://www.w3.org/1999/html">
+<div class="lst-type-wrap" th:fragment="foodNation" xmlns:th="http://www.w3.org/1999/html">
   <h3 data-target="sample">샘플
 
-    <th:block th:if="${error != ''}">
+    <th:block th:if="${error != null}">
       <span>-[[${error}]]</span>
     </th:block>
-    <th:bloc th:unless="${error != ''}">
+    <th:bloc th:unless="${error != null}">
       <span>([[${#numbers.formatInteger(sampleTotal,0,'COMMA')}]]건)</span>
     </th:bloc>
   </h3>
@@ -18,11 +18,11 @@
           <input type="hidden" name="id" th:value="${result.post_id}">
           <dl>
             <dt>
-              <a class="title" th:href="${result.post_url}" th:target="_blank">[[${result.title}]]</a>
+              <a class="title" th:href="${result.post_url}" th:target="_blank">[[${result.restaurant_nm}]]</a>
               <span>[[${#temporals.createDate(ed, 'yyyyMMdd')}]]</span>
             </dt>
-            <dd>[[${result.message}]]</dd>
-            <dd class="link-info">[[${result.category}]]</dd>
+            <dd>[[${result.recommend}]]</dd>
+            <dd class="link-info">[[${result.recommend_ner}]]</dd>
           </dl>
         </li>
       </th:block>
@@ -40,6 +40,7 @@
 <!-- sss -->
 <!-- 페이지 -->
 <div id="pagination" class="paging"></div>
+
 <script type="text/javascript">
 
   $(function() {

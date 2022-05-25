@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="search-line" th:fragment="bodyHeader">
+<th:block th:fragment="bodyHeader">
+<div class="search-line">
   <div class="inner">
     <h1 class="pc-view">
       <a href=""><span>KONAN</span></a>
@@ -36,7 +37,7 @@
         <a href="javascript:void(0);" data-target="total" data-trcode="menu01">통합검색<span class="gnb-bar"></span></a>
       </li>
       <li class="ctgr">
-        <a href="javascript:void(0);" data-target="sample" data-trcode="menu02">샘플<span class="gnb-bar"></span></a>
+        <a href="javascript:void(0);" data-target="foodNation" data-trcode="menu02">맛집<span class="gnb-bar"></span></a>
       </li>
     </ul>
     <div class="search-option">
@@ -125,3 +126,4 @@
   </ul>
 </div>
 <!-- end.상세검색 -->
+</th:block>
