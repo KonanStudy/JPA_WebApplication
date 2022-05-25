@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+
+<th:block th:fragment="foodNation">
+<div class="lst-type-wrap">
+  <h3 data-target="foodNation">맛집
+
+    <th:block th:if="${error != null}">
+      <span>-[[${error}]]</span>
+    </th:block>
+    <th:bloc th:unless="${error != null}">
+      <span>([[${#numbers.formatInteger(foodNationTotal,0,'COMMA')}]]건)</span>
+    </th:bloc>
+  </h3>
+
+  <th:block th:if="${foodNationTotal> 0}">
+    <ul class="lst-type-thumb">
+      <th:block th:each="result : ${foodNationList}">
+        <li style="min-height:0px">
+          <dl>
+            <dt>
+              <a class="title">[(${result.restaurant_nm})]</a>
+              <span>[[${result.city_nm}]]</span><span>[[${result.region}]]</span>
+            </dt>
+            <dd>[(${result.recommend})]</dd>
+          </dl>
+        </li>
+      </th:block>
+    </ul>
+  </th:block>
+
+  <th:block th:if="${#strings.equals(params.category, 'total') and foodNationTotal > params.pageSize}">
+    <div class="section-btn more">
+      <a href="javascript:void(0);" data-target="foodNation" data-trcode="sweb_more">맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
+    </div>
+
+</div>
+<!-- e.통합검색 -->
+<!-- 페이지 -->
+<div id="pagination" class="paging"></div>
+
+
+<script type="text/javascript" th:inline="javascript">
+  $(function() {
+    /*[# th:if="${params.category != 'total'}"]*/
+    $('#pagination').pagination( /*[[${foodNationTotal}]]*/, {
+      current_page: /*[[${params.page -1 }]]*/,
+      callback: gotopage
+    });
+    /*[/]*/
+  });
+</script>
+
+</th:block>

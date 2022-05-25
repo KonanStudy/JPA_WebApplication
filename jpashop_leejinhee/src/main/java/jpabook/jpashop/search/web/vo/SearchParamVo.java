@@ -1,4 +1,4 @@
-package jpabook.jpashop.web.vo;
+package jpabook.jpashop.search.web.vo;
 
 import java.util.Date;
 
@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import static jpabook.jpashop.search.constants.SearchConstant.TOTAL_PAGE_SIZE;
 
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,8 +21,8 @@ public class SearchParamVo{
     //페이징
     private int page = 1;
     //페이징건수
-    //private int  pageSize = TOTAL_PAGE_SIZE;
-    private int  pageSize = 3;
+    private int  pageSize = TOTAL_PAGE_SIZE;
+
     private int offset=0;
     //정렬
     private String sort="d";
