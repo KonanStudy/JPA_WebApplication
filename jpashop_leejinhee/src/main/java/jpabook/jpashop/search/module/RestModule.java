@@ -99,7 +99,62 @@ public class RestModule {
 				list.add(map);
 				map = null;
 			}
+			resultVo.setResult(list);
 
+		} catch (JsonParseException e){
+			logger.error(SEARCH5_EXCEPTION, e);
+			return null;
+		}
+
+		logger.debug(resultVo.toString());
+
+		return resultVo;
+
+	}
+
+
+	public RestResultVo restSearchGroupingPost(SearchRestVo restVo) {
+
+		logger.debug(restVo.toString());
+		HttpUtil httpUtil = new HttpUtil();
+
+		StringBuffer sb = httpUtil.getUrlDataPost(restVo);
+		RestResultVo resultVo = new RestResultVo();
+
+		// 결과 파싱
+		try{
+			Gson gson = new Gson();
+
+			JsonObject jsonObject = gson.fromJson( sb.toString(), JsonObject.class);
+			JsonObject rsObject = jsonObject.get("result").getAsJsonObject() ;
+
+			//결과 set
+			//resultVo.setStatus( jsonObject.get("status").getAsString() );
+			//resultVo.setTotal(rsObject.get("total_count").getAsLong() );
+
+			JsonArray arr = rsObject.get("rows").getAsJsonArray();
+
+			List<Map<String, String>> list = new ArrayList<> ();
+			String[] fields = restVo.getSelectFields().split(",");
+			Map<String, String> map;
+			JsonObject fieldobj;
+			String data;
+			for(JsonElement element : arr){
+				map = new HashMap<>();
+				fieldobj = (element.getAsJsonObject()).get("fields").getAsJsonObject();
+
+				for(String field:fields){
+					data =  fieldobj.get(field).getAsString();
+					map.put("name",data.replaceAll(SEARCH_WARNING, ""));
+				}
+
+				//rowid
+				data = (element.getAsJsonObject()).get("sortkey").getAsString();
+				map.put("value", data);
+
+				list.add(map);
+				map = null;
+			}
 			resultVo.setResult(list);
 
 		} catch (JsonParseException e){

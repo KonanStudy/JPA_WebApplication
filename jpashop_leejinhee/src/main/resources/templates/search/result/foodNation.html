@@ -3,7 +3,7 @@
 
 <th:block th:fragment="foodNation">
 <div class="lst-type-wrap">
-  <h3 data-target="foodNation">맛집
+  <h3 data-target="foodNation">전국맛집
 
     <th:block th:if="${error != null}">
       <span>-[[${error}]]</span>
@@ -31,7 +31,7 @@
 
   <th:block th:if="${#strings.equals(params.category, 'total') and foodNationTotal > params.pageSize}">
     <div class="section-btn more">
-      <a href="javascript:void(0);" data-target="foodNation" data-trcode="sweb_more">맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
+      <a href="javascript:void(0);" data-target="foodNation" data-trcode="sweb_more">전국맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
     </div>
 
 </div>

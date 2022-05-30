@@ -17,19 +17,19 @@
 $(function(){
 
 	//자동완성에 검색어 표시
-	autorecent();
+	//autorecent();
 
 	//자동완성
-	autocomplete();
+	//autocomplete();
 
 	//연관검색어
-	related();
+	//related();
 
 	//인기검색어
-	popularkey();
+	//popularkey();
 
 	//최근검색어(위젯)
-	$( "#recent" ).recent();
+	//$( "#recent" ).recent();
 
 	//related();
 

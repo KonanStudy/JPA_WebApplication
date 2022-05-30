@@ -29,6 +29,20 @@
         </section>
 
         <section id="column-right">
+            <div class="keyword-wrap">
+                <h3>지역별 검색</h3>
+                <div id="back" style="cursor: pointer;" th:onclick="areaClick();">전국</div>
+                <div id="davifMap" class="box-content davifMap" style="width: 250px;height: 350px;">
+
+                </div>
+            </div>
+
+            <div class="keyword-wrap">
+                <h3>클라우드</h3>
+                <div id="davifCloud" class="box-content davifCloud" style="width: 300px;height: 350px;">
+
+                </div>
+            </div>
 
         </section>
     </section>
@@ -37,3 +51,13 @@
 </div>
 </body>
 </html>
+
+<script>
+    $(function (){
+        getMap();
+        //drawMap();
+
+        getCloud();
+        //darwCloud();
+    });
+</script>
