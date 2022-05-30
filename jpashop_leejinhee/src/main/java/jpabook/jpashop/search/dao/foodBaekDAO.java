@@ -10,19 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class foodNationDAO {
+public class foodBaekDAO {
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    public Model foodNationSearch(SearchParamVo paramVo, Model model){
-        logger.info("foodNationSearch");
+    public Model foodBaekSearch(SearchParamVo paramVo, Model model){
+        logger.info("foodBaekSearch");
         try{
-            String listName = "foodNationList";
-            String totalName="foodNationTotal";
+            String listName = "foodBaekList";
+            String totalName="foodBaekTotal";
 
             //SearchParamVo paramvo = (SearchParamVo)request.getAttribute("params");
             String kwd = paramVo.getKwd();
@@ -41,7 +36,7 @@ public class foodNationDAO {
                 CommonUtil comUtil = new CommonUtil();
                 StringBuffer sbquery = new StringBuffer();
                 StringBuffer sbcustom = new StringBuffer();
-                String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
+                String strNmFd = paramVo.getFields().isEmpty() ? "strp_idx" : paramVo.getFields();
 
 
                 //상세검색
@@ -50,14 +45,15 @@ public class foodNationDAO {
                 } else {  //일반검색
                     sbquery.append(strNmFd);
                     //sbquery.append(" = '").append(kwd).append("' allword synonym ");
-                    sbquery.append(" = '").append(kwd).append("' anyword");
+                    /*sbquery.append(" = '").append(kwd).append("' anyword");*/
+                    sbquery.append(" = '").append(kwd).append("'");
                 }
 
                 if (!kwd.isEmpty() && !paramVo.getClickCity().isEmpty()) {
-                    sbquery.append(" and region = '").append(paramVo.getClickCity()).append("' ");
+                    sbquery.append(" and region like '").append(paramVo.getClickCity()).append("*' ");
                 }else if(kwd.isEmpty() && !paramVo.getClickCity().isEmpty()){
                     sbquery.setLength(0);
-                    sbquery.append("region= '").append(paramVo.getClickCity()).append("' ");
+                    sbquery.append("region like '").append(paramVo.getClickCity()).append("*' ");
                 }else if(kwd.isEmpty() && paramVo.getClickCity().isEmpty()){
                     model.addAttribute(totalName, 0 );
                     return model;
@@ -99,15 +95,15 @@ public class foodNationDAO {
 
 
 
-            restvo.setSelectFields("region,city_nm,food_type,menu,restaurant_nm,srch_kwd,recommend");
-            restvo.setFrom("food_nation.food_nation");
+            restvo.setSelectFields("broadcast_date,food_type,region_gu,region,res_nm,phone_num,address,parcel_add,menu");
+            restvo.setFrom("food_baek.food_baek");
             restvo.setWhere( sbquery.toString() );
             restvo.setOffset( paramVo.getOffset() );
             restvo.setPagelength(paramVo.getPageSize() );
-            restvo.setHilightFields("{'restaurant_nm':{'length':250,'begin':'<strong>','end':'</strong>'}},{'recommend':{'length':200,'begin':'<strong>','end':'</strong>'}}");
+            restvo.setHilightFields("{'res_nm':{'length':250,'begin':'<strong>','end':'</strong>'}},{'menu':{'length':200,'begin':'<strong>','end':'</strong>'}}");
             restvo.setCustomLog(comUtil.getCustomLog(paramVo)  );
 
-            logger.info(">>>>>>>>>>>>>  foodNation query: "+ restvo.toString());
+            logger.info(">>>>>>>>>>>>>  foodBaek query: "+ restvo.toString());
             RestResultVo resultvo = module.restSearchPost(restvo);
 
 
@@ -121,83 +117,10 @@ public class foodNationDAO {
 
         }catch (Exception e){
             e.printStackTrace();
-            logger.error(" foodNation error - "+e.toString());
+            logger.error(" foodBaek error - "+e.toString());
             model.addAttribute("error", SearchConstant.MSG_SEARCH_ERROR);
         }
     return model;
     }
-
-    public List<Map<String, String>> foodNationGetMap(Map<String, String> map, Model model){
-        logger.info("foodNationGetMap");
-        List<Map<String, String>> result = new ArrayList<>();
-        try{
-            //검색어 있을 경우
-            SearchRestVo restvo = new SearchRestVo();
-            RestModule module = new RestModule();
-
-            CommonUtil comUtil = new CommonUtil();
-            StringBuffer sbquery = new StringBuffer();
-            StringBuffer sbcustom = new StringBuffer();
-            //String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
-
-            if(!map.get("kwd").isEmpty()){
-                sbquery.append("text_idx = '" + map.get("kwd").toString() + "' ");
-            }
-
-            sbquery.append(" group by region order by count(*) desc");
-
-            restvo.setSelectFields("region");
-            restvo.setFrom("food_nation.food_nation");
-            restvo.setWhere( sbquery.toString() );
-            restvo.setPagelength(10);
-
-            logger.info(">>>>>>>>>>>>>  foodNationGetMap query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchGroupingPost(restvo);
-
-            result = resultvo.getResult();
-
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.error(" foodNationGetMap error - "+e.toString());
-            model.addAttribute("error", SearchConstant.MSG_SEARCH_ERROR);
-        }
-        return result;
-    }
-
-
-
-    public List<Map<String, String>> foodNationGetCloud(Map<String, String> map, Model model){
-        logger.info("foodNationGetCloud");
-        List<Map<String, String>> result = new ArrayList<>();
-        try{
-            //검색어 있을 경우
-            SearchRestVo restvo = new SearchRestVo();
-            RestModule module = new RestModule();
-
-            CommonUtil comUtil = new CommonUtil();
-            StringBuffer sbquery = new StringBuffer();
-            StringBuffer sbcustom = new StringBuffer();
-            //String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
-
-            sbquery.append("group by food_type order by count(*) desc");
-
-            restvo.setSelectFields("food_type");
-            restvo.setFrom("food_nation.food_nation");
-            restvo.setWhere( sbquery.toString() );
-            restvo.setPagelength(10);
-
-            logger.info(">>>>>>>>>>>>>  foodNationGetCloud query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchGroupingPost(restvo);
-
-            result = resultvo.getResult();
-
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.error(" foodNationGetCloud error - "+e.toString());
-            model.addAttribute("error", SearchConstant.MSG_SEARCH_ERROR);
-        }
-        return result;
-    }
-
 
 }

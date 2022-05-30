@@ -1,8 +1,24 @@
 <th:block  th:fragment="resultTotal">
-    <th:block th:if="${sampleTotal == 0}">
+    <th:block th:if="${total == 0}">
         <th:block th:insert="search/result/noresult :: noresult" />
     </th:block>
-    <th:block th:unless="${sampleTotal == 0}">
-        <th:block th:insert="search/result/foodNation :: foodNation" />
+    <th:block th:unless="${total == 0}">
+
+        <th:block th:if="${#strings.equals(params.category, 'foodNation') and foodNationTotal == 0 }">
+            <th:block th:insert="search/result/noresult :: noresult" />
+        </th:block>
+        <th:block th:if="${(#strings.equals(params.category, 'total') or #strings.equals(params.category, 'foodNation'))and foodNationTotal != 0}">
+            <th:block th:insert="search/result/foodNation :: foodNation" />
+        </th:block>
+
+
+        <th:block th:if="${#strings.equals(params.category, 'foodBaek') and foodBaekTotal == 0}">
+            <th:block th:insert="search/result/noresult :: noresult" />
+        </th:block>
+        <th:block th:if="${(#strings.equals(params.category, 'total') or #strings.equals(params.category, 'foodBaek')) and foodBaekTotal != 0}">
+            <th:block th:insert="search/result/foodBaek :: foodBaek" />
+        </th:block>
+
+
     </th:block>
 </th:block>

@@ -44,6 +44,7 @@ dependencies {
 	implementation 'javax.servlet:jstl'
 
 	implementation 'com.google.code.gson:gson' //gson 사용 추가
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
 	implementation 'org.jetbrains:annotations:20.1.0'

@@ -1,16 +1,13 @@
 package jpabook.jpashop.search.web.service;
 
-import jpabook.jpashop.search.web.vo.RestResultVo;
 import jpabook.jpashop.search.web.vo.SearchParamVo;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 @Service
 public class SearchService {
@@ -18,10 +15,18 @@ public class SearchService {
     Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     public Model searchModel(SearchParamVo paramvo, Model model, String totalCategory) {
+
+        String searchCategory = "";
         int total = 0;
 
+        if(!"total".equals(paramvo.getCategory())){
+            searchCategory = paramvo.getCategory();
+        }else{
+            searchCategory = totalCategory;
+        }
+
         //if ("total".equals(paramvo.getCategory())) {
-            String[] split = totalCategory.split(",");
+            String[] split = searchCategory.split(",");
             for (int i = 0; i < split.length; i++) {
                 String categoryClass = split[i];
 
@@ -33,7 +38,7 @@ public class SearchService {
                     Object newObj = formatClass.newInstance();
                     Method m = formatClass.getMethod(methodName,SearchParamVo.class, Model.class);
                     m.invoke(newObj, paramvo, model);
-                    int count = (int) model.getAttribute(totalName);
+                    int count = Integer.parseInt(String.valueOf(model.getAttribute(totalName)));
                     total += count;
 
                 } catch (Exception e) {

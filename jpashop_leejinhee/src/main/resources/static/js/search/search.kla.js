@@ -15,10 +15,10 @@
 $(function(){
 
 	//급상승키워드
-	rankupper();
+	//rankupper();
 
 	//검색어별 많이 조회한 콘텐츠
-	docidrank();
+	//docidrank();
 
 	//최신콘텐츠
 	//newestcontents();

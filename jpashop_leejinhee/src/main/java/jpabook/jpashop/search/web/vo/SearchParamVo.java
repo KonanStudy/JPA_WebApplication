@@ -62,4 +62,6 @@ public class SearchParamVo{
     private String userid="";
     private String gender="";
 
+    private String clickCity="";
+
 }
