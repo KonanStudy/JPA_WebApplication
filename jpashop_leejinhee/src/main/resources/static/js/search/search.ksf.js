@@ -17,10 +17,10 @@
 $(function(){
 
 	//자동완성에 검색어 표시
-	//autorecent();
+	autorecent();
 
 	//자동완성
-	//autocomplete();
+	autocomplete();
 
 	//연관검색어
 	//related();
