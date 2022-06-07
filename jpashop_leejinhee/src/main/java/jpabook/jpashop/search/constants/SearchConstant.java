@@ -14,7 +14,7 @@ public class SearchConstant {
     //검색엔진 URL
     public static String	SEARCH_URL = "http://10.10.20.223:9577/search5?";
     //KSF URL
-    public static String   KSF_URL;
+    public static String   KSF_URL = "http://10.10.20.223:2614/ksf/api/";
 
     /** 검색서버 연결 대기 시간 */
     public static int TIMEOUT = 5000;
