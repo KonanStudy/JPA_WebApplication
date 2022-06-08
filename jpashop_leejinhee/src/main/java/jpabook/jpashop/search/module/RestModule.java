@@ -128,10 +128,6 @@ public class RestModule {
 			JsonObject jsonObject = gson.fromJson( sb.toString(), JsonObject.class);
 			JsonObject rsObject = jsonObject.get("result").getAsJsonObject() ;
 
-			//결과 set
-			//resultVo.setStatus( jsonObject.get("status").getAsString() );
-			//resultVo.setTotal(rsObject.get("total_count").getAsLong() );
-
 			JsonArray arr = rsObject.get("rows").getAsJsonArray();
 
 			List<Map<String, String>> list = new ArrayList<> ();
@@ -168,4 +164,192 @@ public class RestModule {
 
 	}
 
+	public RestResultVo restSearchGroupingGet(SearchRestVo restVo) {
+
+		logger.debug(restVo.toString());
+		HttpUtil httpUtil = new HttpUtil();
+
+		StringBuffer sb = httpUtil.getUrlDataGet(restVo);
+		RestResultVo resultVo = new RestResultVo();
+
+		// 결과 파싱
+		try{
+			Gson gson = new Gson();
+
+			JsonObject jsonObject = gson.fromJson( sb.toString(), JsonObject.class);
+			JsonArray arr = jsonObject.get("result").getAsJsonArray();
+
+			List<Map<String, String>> list = new ArrayList<> ();
+			String[] fields = restVo.getSelectFields().split(",");
+			Map<String, String> map;
+			JsonObject fieldobj;
+			String data;
+			for(JsonElement element : arr){
+				map = new HashMap<>();
+				fieldobj = (element.getAsJsonObject()).getAsJsonObject();
+
+				for(String field:fields){
+					data =  fieldobj.get(field).getAsString();
+
+					if("region".equals(field)){
+						map.put("name",data.replaceAll(SEARCH_WARNING, ""));
+					}
+					if("count(*)".equals(field)){
+						map.put("value",data.replaceAll(SEARCH_WARNING, ""));
+					}
+				}
+				list.add(map);
+				map = null;
+			}
+			logger.info(list.toString());
+			resultVo.setResult(list);
+
+		} catch (JsonParseException e){
+			logger.error(SEARCH5_EXCEPTION, e);
+			return null;
+		}
+
+		logger.debug(resultVo.toString());
+
+		return resultVo;
+
+	}
+
+
+	public RestResultVo restSearchCloudPost(SearchRestVo restVo) {
+
+		logger.debug(restVo.toString());
+		HttpUtil httpUtil = new HttpUtil();
+
+		//StringBuffer sb = httpUtil.getUrlDataPost(restVo);
+		StringBuffer sb = httpUtil.getUrlDataGet(restVo);
+		RestResultVo resultVo = new RestResultVo();
+
+		// 결과 파싱
+		try{
+			Gson gson = new Gson();
+
+			//결과 set
+			JsonArray arr = gson.fromJson(sb.toString(), JsonArray.class);
+
+			List<Map<String, String>> list = new ArrayList<> ();
+			String[] fields = restVo.getSelectFields().split(",");
+			Map<String, String> map;
+			JsonObject fieldobj;
+			String data;
+			for(JsonElement element : arr){
+				map = new HashMap<>();
+				fieldobj = (element.getAsJsonObject()).getAsJsonObject();
+
+				for(String field:fields){
+					data =  fieldobj.get(field).getAsString();
+					map.put("name",data.replaceAll(SEARCH_WARNING, ""));
+					data = fieldobj.get("size("+field+")").getAsString();
+					map.put("value",data.replaceAll(SEARCH_WARNING, ""));
+				}
+
+				list.add(map);
+				map = null;
+			}
+			resultVo.setResult(list);
+
+		} catch (JsonParseException e){
+			logger.error(SEARCH5_EXCEPTION, e);
+			return null;
+		}
+
+		logger.debug(resultVo.toString());
+
+		return resultVo;
+
+	}
+
+
+
+	public RestResultVo customRestSearchGet(SearchRestVo restVo) {
+		logger.debug(restVo.toString());
+		HttpUtil httpUtil = new HttpUtil();
+		StringBuffer sb = httpUtil.getUrlDataGet(restVo);
+		RestResultVo resultVo = new RestResultVo();
+		//List<Map<String, String>> list = new ArrayList<> ();
+
+		// 결과 파싱
+		try{
+			Gson gson = new Gson();
+
+			JsonObject jsonObject = gson.fromJson( sb.toString(), JsonObject.class);
+
+			//결과 set
+			List<Map<String, String>> list = new ArrayList<> ();
+			String[] fields = restVo.getSelectFields().split(",");
+
+			if(restVo.getUrl().equals(restVo.getCustomSearchUrl())){
+				JsonObject rsObject = jsonObject.get("result").getAsJsonObject() ;
+				resultVo.setStatus( jsonObject.get("status").getAsString() );
+				resultVo.setTotal(rsObject.get("total_count").getAsLong() );
+				JsonArray arr = rsObject.get("rows").getAsJsonArray();
+
+				list = customSearchParsing(arr, fields);
+
+			}else{
+				JsonArray arr = jsonObject.get("result").getAsJsonArray();
+
+				list = customMapParsing(arr, fields);
+			}
+			resultVo.setResult(list);
+
+		} catch (JsonParseException e){
+			logger.error(SEARCH5_EXCEPTION, e);
+			return null;
+		}
+
+		logger.debug(resultVo.toString());
+
+		return resultVo;
+
+	}
+
+	private List<Map<String, String>> customMapParsing(JsonArray arr, String[] fields) {
+		List<Map<String, String>> list = new ArrayList<>();
+		Map<String, String> map;
+		JsonObject fieldobj;
+		String data;
+		for(JsonElement element : arr) {
+			map = new HashMap<>();
+			fieldobj = (element.getAsJsonObject()).getAsJsonObject();
+
+			for (String field : fields) {
+				data = fieldobj.get(field).getAsString();
+
+				if ("region".equals(field)) {
+					map.put("name", data.replaceAll(SEARCH_WARNING, ""));
+				}
+				if ("count(*)".equals(field)) {
+					map.put("value", data.replaceAll(SEARCH_WARNING, ""));
+				}
+			}
+			list.add(map);
+			map = null;
+		}
+			return list;
+	}
+
+	private List<Map<String, String>> customSearchParsing(JsonArray arr, String[] fields) {
+		List<Map<String, String>> list = new ArrayList<>();
+		Map<String, String> map;
+		JsonObject fieldobj;
+		String data;
+		for(JsonElement element : arr) {
+			map = new HashMap<>();
+			fieldobj = (element.getAsJsonObject()).get("fields").getAsJsonObject();
+
+			for (String field : fields) {
+				data = fieldobj.get(field).getAsString();
+				map.put(field, data.replaceAll(SEARCH_WARNING, ""));
+			}
+			list.add(map);
+			map = null;
+		}
+		return list;
+	}
 }

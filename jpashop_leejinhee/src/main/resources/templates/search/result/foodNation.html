@@ -19,10 +19,10 @@
         <li style="min-height:0px">
           <dl>
             <dt>
-              <a class="title">[(${result.restaurant_nm})]</a>
-              <span>[[${result.city_nm}]]</span><span>[[${result.region}]]</span>
+              <a class="title" id="titleClick" th:onclick="titleClick('[[${result.city_nm}]]', '[(${result.restaurant_nm})]', '[[${result.corpus_kwd}]]');" style="cursor: pointer;">[(${result.restaurant_nm})]</a>
+              <span>[[${result.city_nm}]]</span><span>[(${result.region})]</span>
             </dt>
-            <dd>[(${result.recommend})]</dd>
+            <dd>[(${result.corpus})]</dd>
           </dl>
         </li>
       </th:block>

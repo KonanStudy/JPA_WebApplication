@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,21 +27,28 @@ public class ApiController {
         String result ="";
 
         String type = map.get("type").toString();
-        System.out.println("Api Type :: "+ type);
         result = apiService.getGroupingSearch(map, model, type).toString();
 
         return result;
     }
 
-
-   /* @RequestMapping(value = "/api/getCloud", method = {RequestMethod.GET, RequestMethod.POST})
-    @ResponseBody
+    @RequestMapping(value = "/api/getCloud", method = {RequestMethod.GET, RequestMethod.POST})
     public String getCloud(@RequestParam Map<String, String> map, Model model){
-        String result ="";
+        String[] result = map.get("cloudData").split(" ");
 
-        String Type = "Cloud";
-        result = apiService.getGroupingSearch(map, model, Type).toString();
+        List<Map<String,String>> list = new ArrayList<>();
+        Map<String, String> mapResult;
 
-        return result;
-    }*/
+        for (String name:result){
+            mapResult = new HashMap<>();
+            if(!"".equals(name.replace("\"", ""))){
+                mapResult.put("name",name.replace("\"",""));
+                mapResult.put("value","1");
+                list.add(mapResult);
+            }
+        }
+        model.addAttribute("json", list);
+
+        return "search/result/CloudDraw";
+    }
 }

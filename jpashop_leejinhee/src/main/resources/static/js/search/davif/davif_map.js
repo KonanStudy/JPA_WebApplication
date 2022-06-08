@@ -9,9 +9,8 @@ function getMap(){
     };
     ajax.url = '/api/getDavifData';
     /*ajax.data = $("#kwd").val() !="" ? {"kwd":$("#kwd").val()} : "";*/
-    ajax.data = {"kwd":$("#kwd").val(), "type":"Map"};
+    ajax.data = {"kwd":$("#kwd").val(), "region":$("#clickCity").val(), "type":"Map"};
     ajax.success = function(data) {
-        console.log(data);
         drawMap(data);
     };
     ajax.error = function(xhr, ajaxOptions) {

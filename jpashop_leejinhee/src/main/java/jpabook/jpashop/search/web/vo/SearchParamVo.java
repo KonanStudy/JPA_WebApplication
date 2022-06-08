@@ -64,4 +64,6 @@ public class SearchParamVo{
 
     private String clickCity="";
 
+    private String foodType="한식";
+
 }

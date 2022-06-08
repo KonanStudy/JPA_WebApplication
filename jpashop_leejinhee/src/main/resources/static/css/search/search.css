@@ -42,6 +42,15 @@ nav .gnb > li > a span.gnb-bar{display:none;position:absolute;left:50%;top:0;z-i
 nav .gnb > li > a span.gnb-more{display:inline-block;width:8px;height:8px;background:url(../../images/ico-set.png) no-repeat -11px -10px;vertical-align:middle;margin:-2px 0px 0px 5px;}
 nav .gnb > li > a.active{color:#339adc;font-size:13px;font-family:"Nanum Gothic";}
 nav .gnb > li > a.active span.gnb-bar{display:block;}
+
+nav .gnb_Cloud > li{position:relative;float:left;height:40px;}
+nav .gnb_Cloud > li > a{display:block;font-size:13px;color:#666;font-weight:bold;padding:0px 12px;line-height:44px;background:url(../../images/bg-gnb.gif) no-repeat right center;text-decoration:none;font-family:'고딕',Gothic;}
+nav .gnb_Cloud > li:last-child > a{background:none}
+nav .gnb_Cloud > li > a span.gnb-bar{display:none;/*position:absolute;*/left:50%;top:0;z-index:0;width:100%;height:3px;background:#008dd2;}
+nav .gnb_Cloud > li > a span.gnb-more{display:inline-block;width:8px;height:8px;background:url(../../images/ico-set.png) no-repeat -11px -10px;vertical-align:middle;margin:-2px 0px 0px 5px;}
+nav .gnb_Cloud > li > a.active{color:#339adc;font-size:13px;font-family:"Nanum Gothic";}
+nav .gnb_Cloud > li > a.active span.gnb-bar{display:block;}
+
 nav .search-option{float:left;margin:6px 0px 0px 80px; width:71px;}
 nav .search-option > a{display:block;padding:3px 6px 4px 6px;border:1px solid #cccccc;background:#fff;font-size:12px;color:#666;text-decoration:none;}
 nav .search-option > a.active{border:1px solid #339adc;color:#339adc;}
@@ -122,8 +131,8 @@ span.ico-set{float:right;margin:0 10px 0 0;background-image:url(../../images/ico
 .more-layer .more-menu li a:hover{color:#666;text-decoration:none;font-weight:bold;font-family:"Nanum Gothic"}
 
 .search-option-inner:after{content:"";display:block;clear:both;}
-.search-option-inner {display:none;padding:10px 0 10px 0;border-bottom:1px solid #ddd;margin-right:-200px}
-.search-option-menu {width:418px;margin:0 auto;}
+.search-option-inner {display:none;padding:10px 0 10px 0;border-bottom:1px solid #ddd;/*margin-right:-200px*/margin-right:-365px;}
+.search-option-menu {/*width:418px;*/width:200px;margin:0 auto;}
 .search-option-menu > li {position:relative;float:left; margin-left:-1px;line-height:20px;padding:5px 10px 3px 10px;text-align:center;border:1px solid #e2e2e2;width:75px}
 .search-option-menu > li a {font-family:"Nanum Gothic";color:#7f7e7e; font-size:14px}
 .search-option-menu > li a span.up{width:6px;height:6px;margin:-4px 0px 0px 5px;background-position: -40px -13px !important;}

@@ -19,8 +19,10 @@
         <li style="min-height:0px">
           <dl>
             <dt>
-              <a class="title">[(${result.res_nm})]</a>
-              <span>[[${result.region_gu}]]</span><span>[[${result.region}]]</span>
+              <a class="title" id="titleClick" th:onclick="titleClick('[[${result.region_gu}]]', '[(${result.res_nm})]', '[[${result.corpus}]]');" style="cursor: pointer;">
+                [(${result.res_nm})]
+              </a>
+              <span>[[${result.region_gu}]]</span><span>[(${result.region})]</span>
             </dt>
             <dd>신주소 : [(${result.address})]</dd>
             <dd>구주소 : [(${result.parcel_add})]</dd>

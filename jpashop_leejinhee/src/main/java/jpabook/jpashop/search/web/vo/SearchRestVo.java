@@ -1,12 +1,11 @@
 package jpabook.jpashop.search.web.vo;
 
-import static jpabook.jpashop.search.constants.SearchConstant.CHARSET;
-import static jpabook.jpashop.search.constants.SearchConstant.SEARCH_URL;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import static jpabook.jpashop.search.constants.SearchConstant.*;
 
 @EqualsAndHashCode(callSuper=false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,7 +13,16 @@ import lombok.EqualsAndHashCode;
 public class SearchRestVo{
 
 	// restUrl
-	private String url=SEARCH_URL;
+	private String url;
+
+	private String searchUrl=SEARCH_URL;
+
+	private String customSearchUrl = CUSTOM_SEARCH_URL;
+
+	private String customMapUrl = CUSTOM_MAP_URL;
+
+	private String cloudGroupingUrl = CLOUD_GROUPING_URL;
+
 	// 조회할 필드명
 	private String selectFields="";
 	// 볼륨명

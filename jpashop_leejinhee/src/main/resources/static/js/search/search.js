@@ -206,6 +206,9 @@ $(function() {
 		.find('li > span').removeClass('active').end()
 		.find('[data-target=' + $('#category').val() + ']').addClass('active').end();
 
+	$('.gnb_Cloud')
+		.find('[data-target=' + $('#foodType').val() + ']').addClass('active').end();
+
 	if($('#srch_opt').val() == 'y') {
 		showFilter();
 	};
@@ -496,6 +499,28 @@ $(function() {
 		$('#historyForm').submit();
 	});
 
+
+	/* 카테고리 탭 클릭시 */
+	$('.gnb_Cloud').on('click', 'li.ctgr a', function() {
+		var target = $(this).attr('data-target');
+		//var trcode = $(this).attr('data-trcode');
+		//var kwd = $('#kwd').val();
+		//if(kwd.indexOf('::') > 0) kwd = kwd.substring(0,kwd.indexOf('::'));
+		//$('#kwd').val(kwd);
+		//$('#category').val(target);
+		//$('#page').val('1');
+		//$('#group').val('');
+		//$('#sort').val('d');
+		//$('#tr_code').val(trcode);
+		//$('#historyForm').submit();
+		$('.gnb_Cloud').children("li").children("a").removeClass("active");
+		$('.gnb_Cloud')
+			.find('[data-target=' + target + ']').addClass('active').end();
+		$("#foodType").val(target);
+		getCloud();
+		console.log("category :: " + target);
+	});
+
 	/* 필터(검색옵션) */
 	$('header .search-option-inner').on('click', '.more-menu li', function() {
 		if($(this).children('div').length < 1) {
@@ -503,8 +528,8 @@ $(function() {
 			var dataCd = $(this).children('a').attr('data-cd');
 			$('#'+param).val(dataCd);
 			$('#tr_code').val($(this).children('a').attr('data-trcode'));
-//			$('#startDate').val('');
-//			$('#endDate').val('');
+			//$('#startDate').val('');
+			//$('#endDate').val('');
 			if(param=="sort"){
 				var sortObj = $(this).find('a').find("[data-cd='"+dataCd+"']");
 				$('#sortNm').val(sortObj.text());
@@ -649,3 +674,41 @@ $(function() {
 	});
 
 });
+
+function titleClick(gu,title, cloudData){
+
+	var kwd = gu +" " + title;
+
+	// 장소 검색 객체를 생성합니다
+	var ps = new kakao.maps.services.Places();
+
+	// 키워드로 장소를 검색합니다
+	ps.keywordSearch(kwd, placesSearchCB);
+
+	function placesSearchCB (data, status, pagination) {
+		if (status === kakao.maps.services.Status.OK) {
+
+			window.open(data[0].place_url);
+
+		}else{
+			console.log(cloudData);
+			var form = document.createElement("form");
+			form.setAttribute("charset", "UTF-8");
+			form.setAttribute("method", "Post");  //Post 방식
+			form.setAttribute("target", "popwin");  //Post 방식
+			form.setAttribute("action", "/api/getCloud"); //요청 보낼 주소
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "cloudData");
+			hiddenField.setAttribute("value", cloudData);
+			form.appendChild(hiddenField);
+
+			document.body.appendChild(form);
+
+			window.open('about:blank','popwin','width=400,height=300');
+			form.submit();
+		}
+	}
+
+}

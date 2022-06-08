@@ -163,17 +163,16 @@ public class HttpUtil {
 		StringBuffer sbData = new StringBuffer();
 
 		try {
-			sbData.append("select=").append(restVo.getSelectFields());
-			sbData.append("&from=").append(restVo.getFrom());
-			sbData.append("&where=").append(URLEncoder.encode(restVo.getWhere(),CHARSET_UTF8));
-			sbData.append("&offset=").append(restVo.getOffset());
-			sbData.append("&pagelength=").append(restVo.getPagelength());
-			sbData.append("&hilite-fields=").append(URLEncoder.encode(restVo.getHilightFields(),CHARSET_UTF8));
-			sbData.append("&custom=").append(URLEncoder.encode(restVo.getCustomLog(),CHARSET_UTF8) );
-			sbData.append("&charset=").append(restVo.getCharset());
-			logger.info("select ::: " + sbData.toString());
+
+			if(restVo.getUrl().equals(restVo.getSearchUrl())){
+				sbData = restSearchUrl(restVo);
+			}else{
+				sbData = cloudGroupingUrl(restVo);
+			}
+
 		}catch (Exception e) {
 			logger.error(SEARCH5_EXCEPTION, e);
+			e.printStackTrace();
 			return  new StringBuffer();
 		}
 		logger.debug(sbData.toString());
@@ -201,6 +200,7 @@ public class HttpUtil {
 
 		} catch (IOException ie) {
 			logger.error(SEARCH5_EXCEPTION, ie);
+			ie.printStackTrace();
 			return  new StringBuffer();
 		} finally {
 			try{
@@ -375,5 +375,122 @@ public class HttpUtil {
 		}
 
 	}
+
+	public StringBuffer getUrlDataGet(SearchRestVo restVo) {
+		URL url =null;
+		HttpURLConnection conn = null;
+		BufferedReader br = null;
+		StringBuffer sb = new StringBuffer();
+		StringBuffer sbData;
+
+		try {
+			//sbData = customRestUrl(restVo);
+			if(restVo.getUrl().equals(restVo.getCloudGroupingUrl())){
+				sbData = cloudGroupingUrl(restVo);
+			}else{
+				sbData = customRestUrl(restVo);
+			}
+		}catch (Exception e) {
+			logger.error(SEARCH5_EXCEPTION, e);
+			e.printStackTrace();
+			return  new StringBuffer();
+		}
+		logger.debug(sbData.toString());
+
+		// 조회
+		try{
+			url = new URL( restVo.getUrl()+sbData);
+			conn = (HttpURLConnection) url.openConnection();
+			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName(CHARSET_UTF8)));
+
+
+			for(String line = br.readLine(); line != null ; line = br.readLine()){
+				sb.append(line);
+			}
+
+			return sb;
+
+		} catch (IOException ie) {
+			logger.error(SEARCH5_EXCEPTION, ie);
+			return  new StringBuffer();
+
+		} finally {
+			try{
+				if( br != null) {
+					br.close();
+				}
+			}catch(IOException ie){
+				logger.error(SEARCH5_EXCEPTION, ie);
+			}
+			if( conn != null){
+				conn.disconnect();
+			}
+
+			if( url != null){
+				url = null;
+			}
+		}
+	}
+
+	public StringBuffer restSearchUrl(SearchRestVo restVo){
+		StringBuffer sbData = new StringBuffer();
+
+		try {
+			sbData.append("select=").append(restVo.getSelectFields());
+			sbData.append("&from=").append(restVo.getFrom());
+			sbData.append("&where=").append(URLEncoder.encode(restVo.getWhere(),CHARSET_UTF8));
+			sbData.append("&offset=").append(restVo.getOffset());
+			sbData.append("&pagelength=").append(restVo.getPagelength());
+			sbData.append("&hilite-fields=").append(URLEncoder.encode(restVo.getHilightFields(),CHARSET_UTF8));
+			sbData.append("&custom=").append(URLEncoder.encode(restVo.getCustomLog(),CHARSET_UTF8) );
+			sbData.append("&charset=").append(restVo.getCharset());
+			logger.info("select ::: " + sbData.toString());
+		} catch (UnsupportedEncodingException e) {
+			logger.error(SEARCH5_EXCEPTION, e);
+			e.printStackTrace();
+			return  new StringBuffer();
+		}
+		return sbData;
+	}
+
+	public StringBuffer customRestUrl(SearchRestVo restVo){
+		StringBuffer sbData = new StringBuffer();
+
+		try {
+			sbData.append("?select=").append(restVo.getSelectFields());
+			sbData.append("&from=").append(restVo.getFrom());
+			sbData.append("&text=").append(URLEncoder.encode(restVo.getWhere(),CHARSET_UTF8));
+			sbData.append("&option=").append(URLEncoder.encode("9 >1 5 q AGFVXN",CHARSET_UTF8));
+			sbData.append("&limit=").append(restVo.getPagelength());
+			sbData.append("&offset=").append(restVo.getOffset());
+			logger.info("select ::: " + sbData.toString());
+		} catch (UnsupportedEncodingException e) {
+			logger.error(SEARCH5_EXCEPTION, e);
+			e.printStackTrace();
+			return  new StringBuffer();
+		}
+
+		return sbData;
+	}
+
+
+	public StringBuffer cloudGroupingUrl(SearchRestVo restVo){
+		StringBuffer sbData = new StringBuffer();
+
+		try {
+			sbData.append("select=").append(restVo.getSelectFields());
+			sbData.append("&volume=").append(restVo.getFrom());
+			sbData.append("&table=").append(restVo.getFrom());
+			sbData.append("&where=").append(URLEncoder.encode(restVo.getWhere(),CHARSET_UTF8));
+			sbData.append("&limit=").append(restVo.getPagelength());
+			logger.info("select ::: " + sbData.toString());
+		} catch (UnsupportedEncodingException e) {
+			logger.error(SEARCH5_EXCEPTION, e);
+			e.printStackTrace();
+			return  new StringBuffer();
+		}
+		return sbData;
+	}
+
 
 }

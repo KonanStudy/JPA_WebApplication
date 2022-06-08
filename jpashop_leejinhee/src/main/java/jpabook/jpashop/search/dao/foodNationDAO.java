@@ -42,22 +42,29 @@ public class foodNationDAO {
                 StringBuffer sbquery = new StringBuffer();
                 StringBuffer sbcustom = new StringBuffer();
                 String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
-
+                if("title".equals(strNmFd)) strNmFd = "restaurant_nm";
 
                 //상세검색
                 if (paramVo.isDetail()) {
                     sbquery.append(comUtil.makeDetailQuery(paramVo, strNmFd));
                 } else {  //일반검색
-                    sbquery.append(strNmFd);
-                    //sbquery.append(" = '").append(kwd).append("' allword synonym ");
-                    sbquery.append(" = '").append(kwd).append("' anyword");
+                    //sbquery.append(strNmFd);
+                    ////sbquery.append(" = '").append(kwd).append("' allword synonym ");
+                    //if("text_idx".equals(strNmFd)){
+                    //    sbquery.append(" = '").append(kwd).append("' anyword");
+                    //}else{
+                    //    sbquery.append(" like '*").append(kwd).append("*' ");
+                    //}
+                    sbquery.append(kwd);
                 }
 
                 if (!kwd.isEmpty() && !paramVo.getClickCity().isEmpty()) {
-                    sbquery.append(" and region = '").append(paramVo.getClickCity()).append("' ");
+                    //sbquery.append(" and region = '").append(paramVo.getClickCity()).append("' ");
+                    sbquery.insert(0,paramVo.getClickCity().toString() + " ");
                 }else if(kwd.isEmpty() && !paramVo.getClickCity().isEmpty()){
                     sbquery.setLength(0);
-                    sbquery.append("region= '").append(paramVo.getClickCity()).append("' ");
+                    //sbquery.append("region= '").append(paramVo.getClickCity()).append("' ");
+                    sbquery.append(paramVo.getClickCity());
                 }else if(kwd.isEmpty() && paramVo.getClickCity().isEmpty()){
                     model.addAttribute(totalName, 0 );
                     return model;
@@ -99,16 +106,18 @@ public class foodNationDAO {
 
 
 
-            restvo.setSelectFields("region,city_nm,food_type,menu,restaurant_nm,srch_kwd,recommend");
+            restvo.setUrl(restvo.getCustomSearchUrl().toString());
+            restvo.setSelectFields("region,city_nm,food_type,menu,restaurant_nm,srch_kwd,corpus,corpus_kwd");
             restvo.setFrom("food_nation.food_nation");
-            restvo.setWhere( sbquery.toString() );
+            restvo.setWhere( sbquery.toString());
             restvo.setOffset( paramVo.getOffset() );
             restvo.setPagelength(paramVo.getPageSize() );
             restvo.setHilightFields("{'restaurant_nm':{'length':250,'begin':'<strong>','end':'</strong>'}},{'recommend':{'length':200,'begin':'<strong>','end':'</strong>'}}");
             restvo.setCustomLog(comUtil.getCustomLog(paramVo)  );
 
             logger.info(">>>>>>>>>>>>>  foodNation query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchPost(restvo);
+            //RestResultVo resultvo = module.restSearchPost(restvo);
+            RestResultVo resultvo = module.customRestSearchGet(restvo);
 
 
             logger.debug(">>>>>>>>>>>>>  query-sample "+paramVo);
@@ -140,19 +149,35 @@ public class foodNationDAO {
             StringBuffer sbcustom = new StringBuffer();
             //String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
 
-            if(!map.get("kwd").isEmpty()){
-                sbquery.append("text_idx = '" + map.get("kwd").toString() + "' ");
+            String kwd = map.get("kwd").toString();
+            String region = map.get("region").toString();
+
+
+            if(!kwd.isEmpty()){
+                sbquery.append(kwd);
             }
 
-            sbquery.append(" group by region order by count(*) desc");
+            if (!kwd.isEmpty() && !region.isEmpty()) {
+                //sbquery.append(" and region = '").append(paramVo.getClickCity()).append("' ");
+                sbquery.insert(0,region + " ");
+            }else if(kwd.isEmpty() && !region.isEmpty()){
+                sbquery.setLength(0);
+                //sbquery.append("region= '").append(paramVo.getClickCity()).append("' ");
+                sbquery.append(region);
+            }
 
-            restvo.setSelectFields("region");
+            //sbquery.append(" group by region order by count(*) desc");
+
+            restvo.setUrl(restvo.getCustomMapUrl().toString());
+            restvo.setSelectFields("region,count(*)");
             restvo.setFrom("food_nation.food_nation");
-            restvo.setWhere( sbquery.toString() );
-            restvo.setPagelength(10);
+            restvo.setWhere( sbquery.toString());
+            restvo.setPagelength(30);
 
             logger.info(">>>>>>>>>>>>>  foodNationGetMap query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchGroupingPost(restvo);
+            //RestResultVo resultvo = module.restSearchGroupingPost(restvo);
+            //RestResultVo resultvo = module.restSearchGroupingGet(restvo);
+            RestResultVo resultvo = module.customRestSearchGet(restvo);
 
             result = resultvo.getResult();
 
@@ -179,15 +204,18 @@ public class foodNationDAO {
             StringBuffer sbcustom = new StringBuffer();
             //String strNmFd = paramVo.getFields().isEmpty() ? "text_idx" : paramVo.getFields();
 
-            sbquery.append("group by food_type order by count(*) desc");
+            sbquery.append("food_type like '").append(map.get("foodType").toString()).append("*'");
+            sbquery.append(" group by food_type,menu order by count(*) desc");
 
-            restvo.setSelectFields("food_type");
-            restvo.setFrom("food_nation.food_nation");
+            restvo.setUrl(restvo.getCloudGroupingUrl().toString());
+            restvo.setSelectFields("menu");
+            restvo.setFrom("food_nation");
             restvo.setWhere( sbquery.toString() );
-            restvo.setPagelength(10);
+            restvo.setPagelength(100);
 
             logger.info(">>>>>>>>>>>>>  foodNationGetCloud query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchGroupingPost(restvo);
+            //RestResultVo resultvo = module.restSearchGroupingPost(restvo);
+            RestResultVo resultvo = module.restSearchCloudPost(restvo);
 
             result = resultvo.getResult();
 
