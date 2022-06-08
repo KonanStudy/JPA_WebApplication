@@ -9,10 +9,8 @@ function getCloud(){
     };
     ajax.url = '/api/getDavifData';
     /*ajax.data = $("#kwd").val() !="" ? {"kwd":$("#kwd").val()} : "";*/
-    ajax.data = {"kwd":$("#kwd").val(), "type": "Cloud"};
+    ajax.data = {"kwd":$("#kwd").val(), "foodType":$("#foodType").val(), "type": "Cloud"};
     ajax.success = function(data) {
-        console.log(data);
-        //var result = JSON.parse(data);
         darwCloud(data);
     };
     ajax.error = function(xhr, ajaxOptions) {

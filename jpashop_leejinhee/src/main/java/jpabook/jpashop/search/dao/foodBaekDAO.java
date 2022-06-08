@@ -37,23 +37,26 @@ public class foodBaekDAO {
                 StringBuffer sbquery = new StringBuffer();
                 StringBuffer sbcustom = new StringBuffer();
                 String strNmFd = paramVo.getFields().isEmpty() ? "strp_idx" : paramVo.getFields();
-
+                if("title".equals(strNmFd)) strNmFd = "res_nm";
 
                 //상세검색
                 if (paramVo.isDetail()) {
                     sbquery.append(comUtil.makeDetailQuery(paramVo, strNmFd));
                 } else {  //일반검색
-                    sbquery.append(strNmFd);
+                    ////sbquery.append(strNmFd);
                     //sbquery.append(" = '").append(kwd).append("' allword synonym ");
                     /*sbquery.append(" = '").append(kwd).append("' anyword");*/
-                    sbquery.append(" = '").append(kwd).append("'");
+                    ////sbquery.append(" like '*").append(kwd).append("*'");
+                    sbquery.append(kwd);
                 }
 
                 if (!kwd.isEmpty() && !paramVo.getClickCity().isEmpty()) {
-                    sbquery.append(" and region like '").append(paramVo.getClickCity()).append("*' ");
+                    //sbquery.append(" and region like '").append(paramVo.getClickCity()).append("*' ");
+                    sbquery.insert(0, paramVo.getClickCity() + " ");
                 }else if(kwd.isEmpty() && !paramVo.getClickCity().isEmpty()){
                     sbquery.setLength(0);
-                    sbquery.append("region like '").append(paramVo.getClickCity()).append("*' ");
+                   //bquery.append("region like '").append(paramVo.getClickCity()).append("*' ");
+                    sbquery.append(paramVo.getClickCity());
                 }else if(kwd.isEmpty() && paramVo.getClickCity().isEmpty()){
                     model.addAttribute(totalName, 0 );
                     return model;
@@ -94,8 +97,8 @@ public class foodBaekDAO {
             }*/
 
 
-
-            restvo.setSelectFields("broadcast_date,food_type,region_gu,region,res_nm,phone_num,address,parcel_add,menu");
+            restvo.setUrl(restvo.getCustomSearchUrl().toString());
+            restvo.setSelectFields("broadcast_date,food_type,region_gu,region,res_nm,phone_num,address,parcel_add,menu,corpus");
             restvo.setFrom("food_baek.food_baek");
             restvo.setWhere( sbquery.toString() );
             restvo.setOffset( paramVo.getOffset() );
@@ -104,8 +107,8 @@ public class foodBaekDAO {
             restvo.setCustomLog(comUtil.getCustomLog(paramVo)  );
 
             logger.info(">>>>>>>>>>>>>  foodBaek query: "+ restvo.toString());
-            RestResultVo resultvo = module.restSearchPost(restvo);
-
+            //RestResultVo resultvo = module.restSearchPost(restvo);
+            RestResultVo resultvo = module.customRestSearchGet(restvo);
 
             logger.debug(">>>>>>>>>>>>>  query-sample "+paramVo);
             logger.debug(">>>>>>>>>>>>>  resultvo list "+resultvo.getResult() );
