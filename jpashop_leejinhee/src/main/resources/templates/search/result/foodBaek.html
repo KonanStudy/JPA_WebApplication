@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+
+<th:block th:fragment="foodBaek">
+<div class="lst-type-wrap">
+  <h3 data-target="foodBaek">백종원맛집
+
+    <th:block th:if="${error != null}">
+      <span>-[[${error}]]</span>
+    </th:block>
+    <th:bloc th:unless="${error != null}">
+      <span>([[${#numbers.formatInteger(foodBaekTotal,0,'COMMA')}]]건)</span>
+    </th:bloc>
+  </h3>
+
+  <th:block th:if="${foodBaekTotal> 0}">
+    <ul class="lst-type-thumb">
+      <th:block th:each="result : ${foodBaekList}">
+        <li style="min-height:0px">
+          <dl>
+            <dt>
+              <a class="title" id="titleClick" th:onclick="titleClick('[[${result.region_gu}]]', '[(${result.res_nm})]', '[[${result.corpus}]]');" style="cursor: pointer;">
+                [(${result.res_nm})]
+              </a>
+              <span>[[${result.region_gu}]]</span><span>[(${result.region})]</span>
+            </dt>
+            <dd><span>&#x1F4E2;</span> 회차 : [(${result.session})] 회차</dd>
+            <dd><span>&#x1F3A5;</span> 방송 일자 : [(${result.broadcast_date})]</dd>
+            <dd><span>&#x1F3E0;</span> 주소 : [(${result.address})]</dd>
+            <dd><span>&#x1F4DE;</span> 대표 번호 : [(${result.phone_num})]</dd>
+          </dl>
+        </li>
+      </th:block>
+    </ul>
+  </th:block>
+
+  <th:block th:if="${#strings.equals(params.category, 'total') and foodBaekTotal > params.pageSize}">
+    <div class="section-btn more">
+      <a href="javascript:void(0);" data-target="foodBaek" data-trcode="sweb_more">백종원맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
+    </div>
+
+</div>
+<!-- e.통합검색 -->
+<!-- 페이지 -->
+<div id="pagination" class="paging"></div>
+
+
+<script type="text/javascript" th:inline="javascript">
+  $(function() {
+    /*[# th:if="${params.category != 'total'}"]*/
+    $('#pagination').pagination( /*[[${foodBaekTotal}]]*/, {
+      current_page: /*[[${params.page -1 }]]*/,
+      callback: gotopage
+    });
+    /*[/]*/
+  });
+</script>
+
+</th:block>

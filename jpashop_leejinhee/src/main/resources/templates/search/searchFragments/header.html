@@ -16,7 +16,9 @@
     <link type="text/css" rel="stylesheet"  th:href="@{/css/search/search.css}">
     <link type="text/css" rel="stylesheet"  th:href="@{/js/search/jquery-ui-1.12.1.custom/jquery-ui.css}">
     <!--     <link type="text/css" rel="stylesheet"  href="resources/js/jquery/pagination.css"> -->
-    <script type="text/javascript" th:src="@{/js/search/jquery-ui-1.12.1.custom/external/jquery/jquery-3.4.1.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/search/davif/jquery.min.js}"></script><!-- Events -->
+    <!--<script type="text/javascript" th:src="@{/js/search/jquery-ui-1.12.1.custom/external/jquery/jquery-3.4.1.js}"></script>-->
     <script type="text/javascript" th:src="@{/js/search/jquery-ui-1.12.1.custom/jquery-ui.js}"></script><!--jQuery UI -->
     <script type="text/javascript" th:src="@{/js/search/jquery/jquery.deserialize.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/search/jquery/jquery.cookie.js}"></script>
@@ -29,10 +31,23 @@
     <script type="text/javascript" th:src="@{/js/search/search.ksf.js}"></script>
     <script type="text/javascript" th:src="@{/js/search/search.kla.js}"></script><!-- Events -->
     <script type="text/javascript" th:src="@{/js/search/rolling.js}"></script><!-- Events -->
+
+    <!-- davif -->
+    <!--<script type="text/javascript" th:src="@{/js/search/davif/jquery-1.11.1.min.js}"></script>--><!-- Events -->
+    <script type="text/javascript" th:src="@{/js/search/davif/KDaViF.min.js}"></script><!-- Events -->
+    <script type="text/javascript" th:src="@{/js/search/davif/KDaViF.js}"></script><!-- Events -->
+    <script type="text/javascript" th:src="@{/js/search/davif/KDaViF.map.js}"></script><!-- Events -->
+    <script type="text/javascript" th:src="@{/js/search/davif/davif_map.js}"></script><!-- Events -->
+    <script type="text/javascript" th:src="@{/js/search/davif/davif_cloud.js}"></script><!-- Events -->
+
     <!-- 엑셀저장 -->
     <script type="text/javascript" th:src="@{/js/search/sheetjs/xlsx.full.min.js}"></script><!-- Events -->
     <script type="text/javascript" th:src="@{/js/search/filesaver/FileSaver.min.js}"></script><!-- Events -->
     <script type="text/javascript" th:src="@{/js/search/search.excel.js}"></script><!-- Events -->
+
+    <!--<script type="text/javascript" th:src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t10bfbgdg9&submodules=geocoder"></script>-->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af0a6b5cbc46793b048ea93e0723faa7&libraries=services"></script>
+
     <script>
         $( function() {
             $( "#sdate, #edate" ).datepicker({ dateFormat:"yymmdd" });

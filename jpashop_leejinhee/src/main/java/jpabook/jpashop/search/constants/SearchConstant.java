@@ -13,8 +13,11 @@ public class SearchConstant {
 
     //검색엔진 URL
     public static String	SEARCH_URL = "http://10.10.20.223:9577/search5?";
+    public static String	CLOUD_GROUPING_URL = "http://10.10.20.223:9577/ksm/grp/group?";
+    public static String	CUSTOM_SEARCH_URL = "http://10.10.20.223:9577/ksm/kwdtosrch/search";
+    public static String	CUSTOM_MAP_URL = "http://10.10.20.223:9577/ksm/kwdtogroup/search";
     //KSF URL
-    public static String   KSF_URL;
+    public static String   KSF_URL = "http://10.10.20.223:2614/ksf/api/" ;
 
     /** 검색서버 연결 대기 시간 */
     public static int TIMEOUT = 5000;

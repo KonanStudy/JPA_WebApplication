@@ -17,7 +17,7 @@
 $(function(){
 
 	//자동완성에 검색어 표시
-	autorecent();
+	//autorecent();
 
 	//자동완성
 	autocomplete();
@@ -25,11 +25,14 @@ $(function(){
 	//연관검색어
 	related();
 
+    //오타교정
+    getSpellchek();
+
 	//인기검색어
-	popularkey();
+	//popularkey();
 
 	//최근검색어(위젯)
-	$( "#recent" ).recent();
+	//$( "#recent" ).recent();
 
 	//related();
 
@@ -125,8 +128,8 @@ function popularkey(){
 
 
 function autorecent(){
-	$('header input[name=kwd]').on("propertychange change keyup paste input",function() {
-		$('header input[name=kwd]').autorecent();
+	$('input[name=kwd]').on("propertychange change keyup paste input",function() {
+		$('input[name=kwd]').autorecent();
 	});
 }
 
@@ -135,12 +138,13 @@ function autorecent(){
 * ksf 표준소스 기준으로 ajax 호출하여 데이터를 보여준다.
 * @ return str
 **/
+
 function autocomplete(){
 	// 자동완성 위젯 초기화
 	var flagAutoCompleteInitDone;
 
     //자동완성
-    $('header input[name=kwd]')
+    /*$('input[name=kwd]')
     .each(function(){  // IE11 hack
         // first we handle 'input' event and prevent its further propagation
         // until our variable is initialized with setTimeout() handler call
@@ -153,7 +157,21 @@ function autocomplete(){
             }, false);
         }
     }) // /IE11 hack
-    .autocomplete({   source: 'ksf/akc.do'   });
+    .autocomplete({   source: '/ksf/akc'   });*/
+
+    $('input[name=kwd]').autocomplete( {
+        source: function(request, response) {
+            $.ajax({
+                url: "/ksf/akc",
+                data: request,
+                dataType: "json",
+                success: function(data) {
+                    response(data);
+                }
+            });
+        }
+    } );
+
 }
 
 
@@ -173,21 +191,20 @@ function getSpellchek() {
 			success: {},
 			error: {}
 	};
-	ajax.url = 'ksf/spell.do';
+	ajax.url = '/ksf/spell';
 	ajax.data = { term :kwd};
 	ajax.success = function(data) {
-		//console.log("[getSpellchek] success");
 		if(data.length > 0){
 			var rsData;
 
-			rsData = '<strong>검색어 교정</strong>';
+			rsData = '<strong>[검색어 교정]</strong>';
 			data.forEach(function(item) {
-				rsData += '<em><a href=\"javascript:getSpellKwd(\''+item+'\')\">'+item+'</a></em> ';
+				rsData += '&nbsp;&nbsp;<em><a href=\"javascript:goKwd(\''+item+'\')\">'+item+'</a></em> ';
 			});
 
-			rsData += ' 으로 검색할까요?';
-			$(".proofs_wrap").html(rsData);
-			$(".proofs_wrap").css("display","block");
+			rsData += ' (으)로 검색할까요?';
+			$(".result-title").append(rsData);
+			//$(".result-spell").css("display","block");
 			}
 	};
 	ajax.error = function(xhr, ajaxOptions) {
@@ -197,22 +214,18 @@ function getSpellchek() {
 	$.ajax(ajax);
 };
 
-//검색어 교정을 통해 바로 검색활성화
-function getSpellKwd(value){
-	//dftSchKwd( value );
-};
-
 
 //연관검색어
 function related(){
+    var kwd = $.trim($("input[name=kwd]").val());
 	var ajax = {
 			type: "GET",
 			url: "",
-			data: { "domain_no" :0, "max_count":10, "term":"1"},
+			data: { "domain_no" :0, "max_count":10, "term":kwd},
 			success: {},
 			error: {}
 	};
-	ajax.url = 'ksf/kre.do';
+	ajax.url = '/ksf/kre';
 	ajax.success = function(data) {
 		if(data.length < 1){
 			$("#related").addClass("dn");
@@ -228,11 +241,10 @@ function related(){
 			var ppkValue;
 
 			$.each(data, function( i, item) {
-				html +=	" <li><a href=\"javascript:void(0);\">"+item+"</a></li>\n";
+				html +=	" <li><a href= \"javascript:goKwd('" + item + "')\" >"+item+"</a></li>\n";
 			});
 			html += "</ul>";
 		}
-
 		$("#related dd").html(html);
 	};
 	ajax.error = function(xhr, ajaxOptions) {
@@ -241,3 +253,14 @@ function related(){
 
 	$.ajax(ajax);
 };
+
+
+// 연관검색어, 오타교정 검색
+function goKwd(value){
+	$('#autospc').val($(this).attr('data-auto'));
+    $('#kwd').val(value);
+    $('#page').val(1);
+    $('#detail').val(false);
+    $('#historyForm').submit();
+};
+

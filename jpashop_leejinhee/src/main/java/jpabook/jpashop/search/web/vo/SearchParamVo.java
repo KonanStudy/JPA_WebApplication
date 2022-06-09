@@ -62,4 +62,8 @@ public class SearchParamVo{
     private String userid="";
     private String gender="";
 
+    private String clickCity="";
+
+    private String foodType="한식";
+
 }

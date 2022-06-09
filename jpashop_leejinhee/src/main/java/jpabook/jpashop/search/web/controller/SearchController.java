@@ -28,7 +28,7 @@ public class SearchController {
 
     private final SearchService searchService;
 
-    String totalCategory = "foodNation";
+    private String totalCategory = "foodNation,foodBaek";
 
     @GetMapping("/searchgo")
     public String SearchGet(@ModelAttribute("params") SearchParamVo paramvo, Model model){
@@ -46,14 +46,8 @@ public class SearchController {
 
         setDefaultParam(paramvo);
 
-        if(!"total".equals(paramvo.getCategory())){
-            totalCategory = paramvo.getCategory();
-        }
-
         searchService.searchModel(paramvo, model, totalCategory);
         model.addAttribute("params",paramvo);
-
-        System.out.println("category :: " + totalCategory);
 
         return "search/searchHome";
     }

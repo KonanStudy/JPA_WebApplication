@@ -3,7 +3,7 @@
 
 <th:block th:fragment="foodNation">
 <div class="lst-type-wrap">
-  <h3 data-target="foodNation">맛집
+  <h3 data-target="foodNation">전국맛집
 
     <th:block th:if="${error != null}">
       <span>-[[${error}]]</span>
@@ -19,10 +19,12 @@
         <li style="min-height:0px">
           <dl>
             <dt>
-              <a class="title">[(${result.restaurant_nm})]</a>
-              <span>[[${result.city_nm}]]</span><span>[[${result.region}]]</span>
+              <a class="title" id="titleClick" th:onclick="titleClick('[[${result.city_nm}]]', '[(${result.restaurant_nm})]', '[[${result.corpus_kwd}]]');" style="cursor: pointer;">[(${result.restaurant_nm})]</a>
+              <span>[[${result.city_nm}]]</span><span>[(${result.region})]</span>
             </dt>
-            <dd>[(${result.recommend})]</dd>
+            <dd><span>&#x1F35C;</span> 음식 분류 : [(${result.food_type})]</dd>
+            <dd><span>&#x1F356;</span> 주 메뉴 : [(${result.menu})]</dd>
+            <dd><span>&#x1F481;</span> 정보 : [(${result.corpus})]</dd>
           </dl>
         </li>
       </th:block>
@@ -31,7 +33,7 @@
 
   <th:block th:if="${#strings.equals(params.category, 'total') and foodNationTotal > params.pageSize}">
     <div class="section-btn more">
-      <a href="javascript:void(0);" data-target="foodNation" data-trcode="sweb_more">맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
+      <a href="javascript:void(0);" data-target="foodNation" data-trcode="sweb_more">전국맛집 더 보기<span class="ico-set arrow-type-a"></span></a>
     </div>
 
 </div>
