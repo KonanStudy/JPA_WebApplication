@@ -503,16 +503,6 @@ $(function() {
 	/* 카테고리 탭 클릭시 */
 	$('.gnb_Cloud').on('click', 'li.ctgr a', function() {
 		var target = $(this).attr('data-target');
-		//var trcode = $(this).attr('data-trcode');
-		//var kwd = $('#kwd').val();
-		//if(kwd.indexOf('::') > 0) kwd = kwd.substring(0,kwd.indexOf('::'));
-		//$('#kwd').val(kwd);
-		//$('#category').val(target);
-		//$('#page').val('1');
-		//$('#group').val('');
-		//$('#sort').val('d');
-		//$('#tr_code').val(trcode);
-		//$('#historyForm').submit();
 		$('.gnb_Cloud').children("li").children("a").removeClass("active");
 		$('.gnb_Cloud')
 			.find('[data-target=' + target + ']').addClass('active').end();

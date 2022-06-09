@@ -29,10 +29,19 @@ public class SearchService {
             String[] split = searchCategory.split(",");
             for (int i = 0; i < split.length; i++) {
                 String categoryClass = split[i];
-
+                String methodName= "";
                 try {
                     String name = "jpabook.jpashop.search.dao." +categoryClass+"DAO";
-                    String methodName = categoryClass+ "Search";
+                    /*if(!"".equals(paramvo.getKwd())){
+                        methodName = categoryClass+ "CustomSearch";
+                    }else{
+                        methodName = categoryClass+ "Search";
+                    }*/
+                    if(!"".equals(paramvo.getKwd()) && "".equals(paramvo.getClickCity())){
+                        methodName = categoryClass+ "CustomSearch";
+                    }else{
+                        methodName = categoryClass+ "Search";
+                    }
                     String totalName = categoryClass + "Total";
                     Class<?> formatClass = Class.forName(name);
                     Object newObj = formatClass.newInstance();
