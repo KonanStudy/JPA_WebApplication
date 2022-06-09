@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader" />
+  <form th:object="${foodForm}" method="post">
+    <!-- id -->
+    <input type="hidden" th:field="*{foodId}" />
+    <div class="form-group">
+      <label th:for="foodType">분류</label> <input type="text"
+       th:field="*{foodType}" class="form-control" placeholder="(ex)한식,양식,중식)" />
+    </div>
+    <div class="form-group">
+      <label th:for="menuName">메뉴명</label> <input type="text"
+       th:field="*{menuName}" class="form-control"
+       placeholder="음식이름을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label th:for="restaurant">상호명</label> <input type="text"
+      th:field="*{restaurant}" class="form-control" placeholder="상호명을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label th:for="region">지역</label> <input type="text"
+      th:field="*{region}" class="form-control" placeholder="지역을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label th:for="city">도시</label> <input type="text"
+      th:field="*{city}" class="form-control" placeholder="도시를 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label th:for="recommend">특징</label> <input type="text"
+      th:field="*{recommend}" class="form-control" placeholder="내용을 입력하세요" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div th:replace="fragments/footer :: footer" />
+</div>
+<!-- /container -->
+</body>
+</html>
