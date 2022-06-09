@@ -119,6 +119,7 @@ $.widget( "konan.autocomplete", {
 
 		this._on( this.element, {
 			keydown: function( event ) {
+			    console.log("확2");
 				if ( this.element.prop( "readOnly" ) ) {
 					suppressKeyPress = true;
 					suppressInput = true;
@@ -240,7 +241,7 @@ $.widget( "konan.autocomplete", {
 			this.menu_wrap = $( "<div>" )
 				.addClass( "auto-search" )
 				.css('display', 'block')
-				.appendTo( this.document.find( "header .search" )[ 0 ] )
+				.appendTo( this.document.find( ".search" )[ 0 ] )
 				.append( menu_wrap_stuffs[0] )
 				//.append( menu_wrap_stuffs[1] );
 				.hide();

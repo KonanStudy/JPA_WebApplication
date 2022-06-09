@@ -32,7 +32,6 @@ public class KsfService {
 
     //자동완성
     public String getAutocomplete(KsfParamVo paramvo) {
-
         StringBuilder sbUrl = new StringBuilder();
         sbUrl.append(KSF_URL);
         sbUrl.append("suggest");
@@ -43,9 +42,9 @@ public class KsfService {
         sbUrl.append("&max_count=").append(paramvo.getMaxCount());
 
 
-        logger.debug(sbUrl.toString());
+        logger.info(sbUrl.toString());
         StringBuffer sb = httpUtil.getUrlData(sbUrl.toString());
-        logger.debug(sb.toString());
+        logger.info(sb.toString());
         return sb.toString();
 
     }
@@ -89,7 +88,7 @@ public class KsfService {
         sbUrl.append("&term=" ).append( httpUtil.urlEncode(paramvo.getTerm(), CHARSET) );
         sbUrl.append("&domain_no=").append(paramvo.getDomainNo());
         sbUrl.append("&max_count=").append(paramvo.getMaxCount());
-        logger.debug(sbUrl.toString());
+        logger.info(sbUrl.toString());
         StringBuffer sb = httpUtil.getUrlData(sbUrl.toString());
 
         return sb.toString();
@@ -102,7 +101,7 @@ public class KsfService {
         sbUrl.append("suggest");
         sbUrl.append("?target=spell");
         sbUrl.append("&term=").append(httpUtil.urlEncode(term) );
-        logger.debug(sbUrl.toString());
+        logger.info(sbUrl.toString());
         StringBuffer sb = httpUtil.getUrlData(sbUrl.toString());
 
         return sb.toString();
