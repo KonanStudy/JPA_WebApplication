@@ -62,6 +62,8 @@ function drawMap(data){
         click: function(d) {
             $("#clickCity").val(d.properties.name);
 
+            $("#kwd").val(d.properties.name);
+
             $("#historyForm").submit();
         }
     });

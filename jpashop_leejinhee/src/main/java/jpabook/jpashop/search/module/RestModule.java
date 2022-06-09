@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jpabook.jpashop.search.util.CommonUtil;
 import jpabook.jpashop.search.util.HttpUtil;
 import jpabook.jpashop.search.web.vo.RestResultVo;
 import jpabook.jpashop.search.web.vo.SearchRestVo;
@@ -29,6 +30,7 @@ public class RestModule {
 
 	private static final Logger logger = LoggerFactory.getLogger(RestModule.class);
 
+	private CommonUtil commonUtil;
 
 	/**
 	 * 검색 호출시 클릭순으로 정렬하기 위한 데이터 조회
@@ -283,16 +285,17 @@ public class RestModule {
 			List<Map<String, String>> list = new ArrayList<> ();
 			String[] fields = restVo.getSelectFields().split(",");
 
+			JsonObject rsObject = jsonObject.get("result").getAsJsonObject() ;
+			JsonArray arr = rsObject.get("rows").getAsJsonArray();
+
 			if(restVo.getUrl().equals(restVo.getCustomSearchUrl())){
-				JsonObject rsObject = jsonObject.get("result").getAsJsonObject() ;
 				resultVo.setStatus( jsonObject.get("status").getAsString() );
 				resultVo.setTotal(rsObject.get("total_count").getAsLong() );
-				JsonArray arr = rsObject.get("rows").getAsJsonArray();
 
 				list = customSearchParsing(arr, fields);
 
 			}else{
-				JsonArray arr = jsonObject.get("result").getAsJsonArray();
+				//JsonArray arr = jsonObject.get("result").getAsJsonArray();
 
 				list = customMapParsing(arr, fields);
 			}
@@ -316,13 +319,14 @@ public class RestModule {
 		String data;
 		for(JsonElement element : arr) {
 			map = new HashMap<>();
-			fieldobj = (element.getAsJsonObject()).getAsJsonObject();
+			fieldobj = (element.getAsJsonObject()).get("fields").getAsJsonObject();
 
 			for (String field : fields) {
 				data = fieldobj.get(field).getAsString();
 
 				if ("region".equals(field)) {
-					map.put("name", data.replaceAll(SEARCH_WARNING, ""));
+					String tempdata = data.replaceAll(SEARCH_WARNING, "");
+					map.put("name", commonUtil.removeTag(tempdata));
 				}
 				if ("count(*)".equals(field)) {
 					map.put("value", data.replaceAll(SEARCH_WARNING, ""));
