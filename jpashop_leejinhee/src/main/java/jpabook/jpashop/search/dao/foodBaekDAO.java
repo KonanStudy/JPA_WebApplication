@@ -98,7 +98,7 @@ public class foodBaekDAO {
 
 
             restvo.setUrl(restvo.getCustomSearchUrl().toString());
-            restvo.setSelectFields("broadcast_date,food_type,region_gu,region,res_nm,phone_num,address,parcel_add,menu,corpus");
+            restvo.setSelectFields("session,broadcast_date,food_type,region_gu,region,res_nm,phone_num,address,parcel_add,menu,corpus");
             restvo.setFrom("food_baek.food_baek");
             restvo.setWhere( sbquery.toString() );
             restvo.setOffset( paramVo.getOffset() );

@@ -22,7 +22,9 @@
               <a class="title" id="titleClick" th:onclick="titleClick('[[${result.city_nm}]]', '[(${result.restaurant_nm})]', '[[${result.corpus_kwd}]]');" style="cursor: pointer;">[(${result.restaurant_nm})]</a>
               <span>[[${result.city_nm}]]</span><span>[(${result.region})]</span>
             </dt>
-            <dd>[(${result.corpus})]</dd>
+            <dd><span>&#x1F35C;</span> 음식 분류 : [(${result.food_type})]</dd>
+            <dd><span>&#x1F356;</span> 주 메뉴 : [(${result.menu})]</dd>
+            <dd><span>&#x1F481;</span> 정보 : [(${result.corpus})]</dd>
           </dl>
         </li>
       </th:block>

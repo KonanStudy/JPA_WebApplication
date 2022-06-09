@@ -517,8 +517,7 @@ $(function() {
 		$('.gnb_Cloud')
 			.find('[data-target=' + target + ']').addClass('active').end();
 		$("#foodType").val(target);
-		getCloud();
-		console.log("category :: " + target);
+		getCloud(target);
 	});
 
 	/* 필터(검색옵션) */
