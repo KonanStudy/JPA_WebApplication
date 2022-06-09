@@ -9,6 +9,7 @@ buildscript {
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	//id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" //추가
 	id 'java'
 }
 
@@ -62,6 +63,9 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa'
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-apt'
+	//querydsl 추가
+	//implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	//implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
 tasks.named('test') {
@@ -69,7 +73,7 @@ tasks.named('test') {
 }
 
 //querydsl 추가
-def querydslDir = 'src/main/generated'
+ def querydslDir = 'src/main/generated'
 //def querydslDir = "$buildDir/generated/querydsl"
 querydsl {
 	library = "com.querydsl:querydsl-apt"

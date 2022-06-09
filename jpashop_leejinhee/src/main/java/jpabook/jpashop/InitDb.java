@@ -84,6 +84,19 @@ public class InitDb {
         }
 
         @NotNull
+        private Food createFood(String foodType, String restaurant, String menuName, String region, String city, String recommend) {
+            Food food = new Food();
+            food.setFoodType(foodType);
+            food.setRestaurant(restaurant);
+            food.setMenuName(menuName);
+            food.setRegion(region);
+            food.setCity(city);
+            food.setRecommend(recommend);
+
+            return food;
+        }
+
+        @NotNull
         private Delivery createDelivery(Member member) {
             Delivery delivery = new Delivery();
             delivery.setAddress(member.getAddress());
